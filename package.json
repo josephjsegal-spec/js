@@ -1,0 +1,1 @@
+{ "name": "nyc-permit-tracker", "version": "1.0.0", "description": "Weekly NYC building permit tracker", "main": "fetch-permits.js", "scripts": { "fetch": "node fetch-permits.js", "backfill": "node fetch-permits.js --backfill" }, "dependencies": { "axios": "^1.6.0", "csv-writer": "^1.6.0" } }
