@@ -1,0 +1,29 @@
+name: Weekly NYC Permit Fetch
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  fetch-permits:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: npm install
+      - run: npm run fetch
+      - run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add permits_*.csv 2>/dev/null || true
+          git commit -m "Weekly permits - $(date +%Y-%m-%d)" || echo "No changes"
+          git push
+        continue-on-error: true
+      - uses: actions/upload-artifact@v3
+        with:
+          name: permits-report
+          path: permits_*.csv
+          retention-days: 30
